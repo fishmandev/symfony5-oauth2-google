@@ -26,6 +26,7 @@ class GoogleAuthenticator extends SocialAuthenticator
     private $clientRegistry;
     private $em;
     private $router;
+    private $session;
 
     /**
      * Oauth2Authenticator constructor.
@@ -68,6 +69,8 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function getCredentials(Request $request)
     {
+        // Init session variable
+        $this->session = $request->getSession();
         return $this->fetchAccessToken($this->getOauth2GoogleServer());
     }
 
@@ -80,7 +83,7 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         $googleUser = $this->getOauth2GoogleServer()
             ->fetchUserFromToken($credentials);
-
+        $this->session->set('accessToken', $credentials->getToken());
         $email = $googleUser->getEmail();
 
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
