@@ -22,7 +22,7 @@ class SecurityController extends AbstractController
      */
     public function connect(ClientRegistry $clientRegistry)
     {
-        return $clientRegistry->getClient('google')->redirect([], []);
+        return $clientRegistry->getClient('google')->redirect(['https://www.googleapis.com/auth/drive'], []);
     }
 
     /**
